@@ -42,6 +42,9 @@ public:
 	void CleanTempTile();
 	void UpdateTile(float timestep, Vector3 player);
 	void Render(Direct3D* renderer, Camera* cam);
+	void OnCollisionEnter();
+	void OnCollisionStay();s
+	void OnCollisionExit();
 
 	// Accessors
 	Vector3 GetPosition() { return m_position; }

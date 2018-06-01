@@ -67,6 +67,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="Direct3D.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -87,6 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="Collisions.h" />
     <ClInclude Include="Direct3D.h" />
     <ClInclude Include="DirectXTK\CommonStates.h" />
     <ClInclude Include="DirectXTK\SimpleMath.h" />
