@@ -29,6 +29,8 @@ void FirstPersonCamera::Update(float timestep)
 
 	Vector3 currentPos = GetPosition();
 
+	//test line
+
 	Matrix lookAtRotation = pitch * heading;
 
 	Vector3 lookAt = Vector3::TransformNormal(Vector3(0, 0, 1), lookAtRotation);
