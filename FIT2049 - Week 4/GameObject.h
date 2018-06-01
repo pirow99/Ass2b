@@ -5,6 +5,7 @@
 #include "MeshManager.h"
 #include "TextureManager.h"
 #include "TexturedShader.h"
+#include "Collisions.h"
 #include <math.h>
 
 class Logic;
@@ -15,6 +16,8 @@ protected:
 	Vector3 m_position;
 	float m_rotX, m_rotY, m_rotZ;
 	float m_scaleX, m_scaleY, m_scaleZ;
+	
+	CBoundingBox m_boundingBox;
 
 	Matrix m_world;
 	Mesh* m_mesh;
@@ -51,6 +54,7 @@ public:
 	Mesh* GetMesh() { return m_mesh; }
 	Texture* GetTexture() { return m_texture; }
 	Shader* GetShader() { return m_shader; }
+	CBoundingBox GetBounds() { return m_boundingBox; }
 
 	// Mutators
 	void SetPosition(Vector3 pos) { m_position = pos; }

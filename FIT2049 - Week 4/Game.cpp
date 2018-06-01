@@ -275,6 +275,12 @@ void Game::InitGameWorld()
 void Game::Update(float timestep)
 {
 	m_input->BeginUpdate();
+	
+	if (m_input->GetKeyDown(VK_ESCAPE))
+	{
+		PostQuitMessage(0);
+	}
+
 	if (player->GetXScale() < 0.4f) //checks to see if the player has enough health
 	{
 		logic->SetGameOver(true);

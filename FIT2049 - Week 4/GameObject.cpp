@@ -54,7 +54,8 @@ GameObject::~GameObject() { CleanTempTile(); }
 
 void GameObject::Update(float timestep)
 {
-
+	m_boundingBox.SetMin(m_position + m_mesh->GetMin());
+	m_boundingBox.SetMax(m_position + m_mesh->GetMax());
 }
 
 void GameObject::Check() //Creates a floor tile under tiles that need to stand on something

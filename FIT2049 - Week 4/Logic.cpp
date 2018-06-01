@@ -55,7 +55,6 @@ void Logic::TileChange() //Checks players current position on the map and acts a
 			}
 			random_shuffle(teleLocation.begin(), teleLocation.end()); //randomises the list of possible destinations
 			m_player->SetPosition(teleLocation[teleLocation.size() - 1]);// moves the player to a random blue tile
-			m_player->SetTarget(teleLocation[teleLocation.size() - 1]);
 			m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + 0.5)]->SetTexture(m_texture->GetTexture("Assets/Textures/tile_disabled.png"));
 			m_player->IncrementMoveCount();
 			PrePos = m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + 0.5)]->GetPosition();
@@ -71,7 +70,6 @@ void Logic::TileChange() //Checks players current position on the map and acts a
 			m_player->IncrementKillCount();
 		}
 		m_player->SetUniformScale(m_player->GetXScale() - 0.08f); //damage that the player takes from the enemy
-		m_player->SetTarget(PrePos);
 	}
 	//same as other red tile with numbers tweaked
 	else if (m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_reder.png"))
@@ -84,7 +82,6 @@ void Logic::TileChange() //Checks players current position on the map and acts a
 			m_player->IncrementKillCount();
 		}
 		m_player->SetUniformScale(m_player->GetXScale() - 0.08f);
-		m_player->SetTarget(PrePos);
 	}
 	//same as other red tile with numbers tweaked
 	else if (m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_redest.png"))
@@ -98,22 +95,7 @@ void Logic::TileChange() //Checks players current position on the map and acts a
 			m_player->IncrementKillCount();
 		}
 		m_player->SetUniformScale(m_player->GetXScale() - 0.08f);
-		m_player->SetTarget(PrePos);
 	}
-}
-
-bool Logic::TileCheck() //Checks if the tile the player is moving to is a valid position, and also checks if the player has any valid moves
-{
-	if (m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_white.png") || m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_green.png") || m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_blue.png") || m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_red.png") || m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_reder.png") || m_map[int(m_player->GetTarget().x + 0.5)][int(m_player->GetTarget().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_redest.png"))
-	{
-		return true;
-	}
-	if (m_map[int(m_player->GetPosition().x + 1.5)][int(m_player->GetPosition().z + -0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + 1.5)][int(m_player->GetPosition().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + 1.5)][int(m_player->GetPosition().z + 1.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + -0.5)][int(m_player->GetPosition().z + -0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + -0.5)][int(m_player->GetPosition().z + 0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + -0.5)][int(m_player->GetPosition().z + 1.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + -0.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png") && m_map[int(m_player->GetPosition().x + 0.5)][int(m_player->GetPosition().z + 1.5)]->GetTexture() == m_texture->GetTexture("Assets/Textures/tile_disabled.png"))
-	{
-		gameOver = true;
-	}
-
-	return false;
 }
 
 bool Logic::WhiteTile(int x, int z) // checks if a give tileis white 
