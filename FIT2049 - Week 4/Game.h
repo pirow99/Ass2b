@@ -22,6 +22,7 @@
 #include <vector>
 #include "TexturedShader.h"
 #include <time.h>
+#include "CollisionManager.h"
 #include "FirstPersonCamera.h"
 
 #include "DirectXTK/SpriteBatch.h"
@@ -45,11 +46,16 @@ private:
 	SpriteFont* m_arialFont12;
 	SpriteFont* m_arialFont18;
 
+	CollisionManager* m_collisionManager;
+
 	Texture* m_healthSprite;
 
 	Shader* m_unlitVertexColouredShader;
 	Shader* m_unlitTexturedShader;
 	std::vector< std::vector<GameObject*> > m_map;
+
+	std::vector<GameObject*>* staticObjects;
+	vector<PhysicsObject*>* collisionObjects;
 
 	std::wstring m_distanceTravelledText;
 	std::wstring m_scoreText;

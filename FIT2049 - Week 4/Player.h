@@ -33,6 +33,10 @@ public:
 	void IncrementMoveCount() { moveCount++; }
 	int GetPlayerFlash() { return playerFlash; }
 	void SetPlayerFlash(bool pf) { playerFlash = pf; }
+
+	void OnCollisionEnter(GameObject* object);
+	void OnCollisionStay(GameObject* object);
+	void OnCollisionExit(GameObject* object);
 	
 };
 

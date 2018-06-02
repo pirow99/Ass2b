@@ -1,12 +1,13 @@
 #include "Logic.h"
 
-Logic::Logic(TextureManager * texture, MeshManager * mesh, vector<vector<GameObject*>> &map, Player * player) //Stores pointers to variables
+Logic::Logic(TextureManager * texture, MeshManager * mesh, vector<vector<GameObject*>> &map, Player * player, std::vector<GameObject*>* TstaticObjects) //Stores pointers to variables
 {
 	m_texture = texture;
 	m_mesh = mesh;
 	m_map = map;
 	m_player = player;
 	gameOver = false; //set the gameover trigger to false
+	staticObjects = TstaticObjects;
 }
 
 Logic::~Logic()
@@ -131,6 +132,7 @@ void Logic::MakeWall(GameObject * Object) //truns a given game object into a wal
 	if (Object->GetPosition().y > -0.5f) //Checks if the object is already a wall
 	{
 		Object->SetPosition(Object->GetPosition() + Vector3(0, -0.5, 0));
+		staticObjects->push_back(Object);
 	}
 }
 

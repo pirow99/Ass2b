@@ -24,6 +24,18 @@ void PhysicsObject::Update(float timestep)
 
 }
 
+void PhysicsObject::OnCollisionEnter(GameObject * object)
+{
+}
+
+void PhysicsObject::OnCollisionStay(GameObject * object)
+{
+}
+
+void PhysicsObject::OnCollisionExit(GameObject * object)
+{
+}
+
 void PhysicsObject::ApplyForce(Vector3 force)
 {
 	// You could take mass into account here if you want to get fancy

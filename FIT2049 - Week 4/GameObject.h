@@ -43,7 +43,7 @@ public:
 	void UpdateTile(float timestep, Vector3 player);
 	void Render(Direct3D* renderer, Camera* cam);
 	void OnCollisionEnter();
-	void OnCollisionStay();s
+	void OnCollisionStay();
 	void OnCollisionExit();
 
 	// Accessors

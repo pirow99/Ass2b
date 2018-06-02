@@ -60,3 +60,17 @@ void Player::SetForward(float Angle) //Determines what direction the player is f
 {
 	playerHeading = Angle;
 }
+
+void Player::OnCollisionEnter(GameObject* object)
+{
+	m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
+}
+
+void Player::OnCollisionStay(GameObject* object)
+{
+	m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
+}
+
+void Player::OnCollisionExit(GameObject* object)
+{
+}

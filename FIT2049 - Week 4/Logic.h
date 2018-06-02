@@ -23,9 +23,10 @@ private:
 	vector<Vector3> teleLocation; //vector of locations that the player can teleport to
 	Vector3 PrePos; // the last valid position the player was on
 	bool gameOver; //is the game still going
+	std::vector<GameObject*>* staticObjects;
 
 public:
-	Logic(TextureManager* texture, MeshManager* mesh, vector< vector<GameObject*> > &map, Player* player);
+	Logic(TextureManager* texture, MeshManager* mesh, vector< vector<GameObject*> > &map, Player* player, std::vector<GameObject*>* TstaticObjects);
 	~Logic();
 	void TileChange();
 	bool TileCheck();

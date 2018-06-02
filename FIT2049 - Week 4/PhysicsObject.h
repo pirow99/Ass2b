@@ -21,6 +21,10 @@ public:
 
 	Vector3 GetVelocity() { return m_velocity; }
 
+	virtual void OnCollisionEnter(GameObject* object);
+	virtual void OnCollisionStay(GameObject* object);
+	virtual void OnCollisionExit(GameObject* object);
+
 };
 
 #endif

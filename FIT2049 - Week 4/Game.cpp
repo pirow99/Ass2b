@@ -21,6 +21,7 @@ Game::Game() //constructor that sets all pointers to null
 	m_unlitVertexColouredShader = NULL;
 	m_playerCam = NULL;
 	m_skyCam = NULL;
+	m_collisionManager = NULL;
 }
 
 Game::~Game() {}
@@ -35,6 +36,7 @@ bool Game::Initialise(Direct3D* renderer, InputController* input) //initialise e
 	m_skyCam->SetPosition(Vector3((float)mapSize / 2, 30.0f, (float)mapSize / 2));
 	m_skyCam->SetLookAt(Vector3((float)mapSize / 2, 0.0f, ((float)mapSize / 2) + 0.01f)); //perfectly aligned camera caused world to not render so + 0.01f
 	srand(time(NULL)); //seed random
+
 
 
 	if (!InitShaders())
@@ -129,6 +131,12 @@ void Game::InitGameWorld()
 {
 	player = new Player(m_meshManager->GetMesh("Assets/Meshes/player_capsule.obj"), m_unlitTexturedShader, m_input, Vector3(1.0f, 0.0f, 1.0f), m_textureManager->GetTexture("Assets/Textures/tile_disabled.png")); //Create player object
 
+	collisionObjects = new vector<PhysicsObject*>;
+
+	staticObjects = new vector<GameObject*>;
+
+	collisionObjects->push_back(player);
+
 	for (int i = 0; i < mapSize; i++)	//Create a map of gameobjects 
 	{
 		vector<GameObject*> temp;
@@ -137,6 +145,7 @@ void Game::InitGameWorld()
 			if (j == 0 || i == 0 || i == mapSize - 1 || j == mapSize - 1) //checks to see if gameobject is on the edge of the map and if so makes it a wall
 			{
 				temp.push_back(new GameObject(m_meshManager->GetMesh("Assets/Meshes/wall_tile.obj"), m_unlitTexturedShader, Vector3((float)i, -0.5f, (float)j), m_textureManager->GetTexture("Assets/Textures/tile_disabled.png")));
+				staticObjects->push_back(temp.back());
 			}
 			else
 			{
@@ -146,7 +155,7 @@ void Game::InitGameWorld()
 		m_map.push_back(temp);
 	}
 
-	logic = new Logic(m_textureManager, m_meshManager, m_map, player); //logic class is created, used to make the game class less messy. Created as a class instead of a library of functions so that I dont have to pass m_textureManager, m_meshManager, m_map, player to every function
+	logic = new Logic(m_textureManager, m_meshManager, m_map, player, staticObjects); //logic class is created, used to make the game class less messy. Created as a class instead of a library of functions so that I dont have to pass m_textureManager, m_meshManager, m_map, player to every function
 
 	for (int i = 0; i < mapSize * 3 / 4; i++) //creates a random amount of walls in the map at random positions
 	{
@@ -268,7 +277,7 @@ void Game::InitGameWorld()
 	//m_playerCam = new FollowCamera(player); //creates the camera that follows the player
 	m_playerCam = new FirstPersonCamera(m_input, player);
 	m_currentCam = m_playerCam; // sets that camera as the camera to render from
-
+	m_collisionManager = new CollisionManager(staticObjects, collisionObjects);
 
 }
 
@@ -276,6 +285,11 @@ void Game::Update(float timestep)
 {
 	m_input->BeginUpdate();
 	
+	for (int i = 0; i < staticObjects->size(); i++)
+	{
+		(*staticObjects)[i]->Update(timestep);
+	}
+
 	if (m_input->GetKeyDown(VK_ESCAPE))
 	{
 		PostQuitMessage(0);
@@ -322,6 +336,8 @@ void Game::Update(float timestep)
 		m_currentCam = m_playerCam;
 	}
 	m_currentCam->Update(timestep); //Updates the camera currently being used
+
+	m_collisionManager->CheckCollisions();
 
 	m_input->EndUpdate();
 }

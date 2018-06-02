@@ -128,3 +128,15 @@ void GameObject::Render(Direct3D* renderer, Camera* cam)
 		tempTile->Render(renderer, cam);
 	}
 }
+
+void GameObject::OnCollisionEnter()
+{
+}
+
+void GameObject::OnCollisionStay()
+{
+}
+
+void GameObject::OnCollisionExit()
+{
+}
