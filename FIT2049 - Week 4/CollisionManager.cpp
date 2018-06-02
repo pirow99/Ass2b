@@ -97,8 +97,8 @@ void CollisionManager::moveToStat()
 					// We are colliding this frame and we weren't last frame - that's a collision enter
 					sObject->OnCollisionEnter();
 					pObject->OnCollisionEnter(sObject);
-					if()
-					Code for deleting bullets this might just end up as a public variable in physic objcets
+					//if()
+					//Code for deleting bullets this might just end up as a public variable in physic objcets
 
 				}
 			}
