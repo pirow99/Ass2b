@@ -72,7 +72,7 @@ void PhysicsObject::Update(float timestep)
 }
 
 void PhysicsObject::OnCollisionEnter(GameObject * object)
-{
+{s
 	if (type == 'b')
 	{
 		del = true;
