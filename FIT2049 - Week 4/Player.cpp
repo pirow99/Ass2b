@@ -23,6 +23,8 @@ Player::~Player()
 
 void Player::Update(float timestep, Logic* logic)
 {
+	playerMoveSpeed = 0.0015f / m_scaleX;
+
 	Vector3 worldForward = Vector3(0, 0, 1);
 
 	Matrix heading = Matrix::CreateRotationY(playerHeading);
@@ -63,6 +65,10 @@ void Player::SetForward(float Angle) //Determines what direction the player is f
 
 void Player::OnCollisionEnter(GameObject* object)
 {
+	if (object->GetType() == 'b')
+	{
+		m_scaleX = m_scaleX - 0.08;
+	}
 	m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
 }
 

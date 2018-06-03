@@ -27,7 +27,7 @@ protected:
 	TextureManager* m_TM;
 	Shader* m_S;
 	GameObject* tempTile;
-
+	char type;
 
 public:
 	GameObject();
@@ -58,6 +58,7 @@ public:
 	Texture* GetTexture() { return m_texture; }
 	Shader* GetShader() { return m_shader; }
 	CBoundingBox GetBounds() { return m_boundingBox; }
+	char GetType() { return type; };
 
 	// Mutators
 	void SetPosition(Vector3 pos) { m_position = pos; }

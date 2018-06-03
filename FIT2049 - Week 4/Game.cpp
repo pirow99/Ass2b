@@ -244,13 +244,12 @@ void Game::InitGameWorld()
 		{
 			tempX = (rand() % (mapSize - 2)) + 1;
 			tempY = (rand() % (mapSize - 2)) + 1;
-			if (logic->WhiteTile(tempX, tempY) && !(tempX == 1 && tempY == 1))
+			if (logic->WhiteTile(tempX, tempY) && !(tempX > 10 && tempY > 10))
 			{
 				if (i < 3) //makes 3 of the easy enemies and one of the other two
 				{
-					m_map[tempX][tempY]->SetTexture(m_textureManager->GetTexture("Assets/Textures/tile_red.png"));
-					m_map[tempX][tempY]->SetMesh(m_meshManager->GetMesh("Assets/Meshes/enemy.obj"));
-					m_map[tempX][tempY]->Check();
+					PhysicsObject* enemy = new PhysicsObject(m_meshManager->GetMesh("Assets/Meshes/enemy.obj"), m_unlitTexturedShader, m_textureManager->GetTexture("Assets/Textures/tile_red.png"), Vector3(tempX, 0, tempY), 1);
+					collisionObjects->push_back(enemy);
 					i++;
 					temp = false;
 				}
@@ -290,17 +289,44 @@ void Game::Update(float timestep)
 		Vector3 worldForward = Vector3(0, 0, 1);
 
 		Matrix heading = Matrix::CreateRotationY(player->GetHeading());
+		Matrix pitch = Matrix::CreateRotationX(m_playerCam->GetPitch());
+		Matrix transformation = heading * pitch;
 
-		Vector3 localForward = Vector3::TransformNormal(worldForward, heading);
+		Vector3 localForward = Vector3::TransformNormal(worldForward, transformation);
 
-		PhysicsObject* temp = new PhysicsObject(m_meshManager->GetMesh("Assets/Meshes/player_capsule.obj"), m_unlitTexturedShader, m_textureManager->GetTexture("Assets/Textures/tile_red.png"), Vector3(player->GetPosition().x, 0.5f, player->GetPosition().y) + localForward * 2, localForward * 0.1);
-
+		PhysicsObject* temp = new PhysicsObject(m_meshManager->GetMesh("Assets/Meshes/player_capsule.obj"), m_unlitTexturedShader, m_textureManager->GetTexture("Assets/Textures/tile_redest.png"), Vector3(player->GetPosition().x, 1.0f, player->GetPosition().z) + localForward, localForward * 0.1);
+		temp->SetUniformScale(0.2);
+		temp->SetXRotation(player->GetHeading());
+		temp->SetYRotation(player->GetHeading());
 		collisionObjects->push_back(temp);
 	}
 
 	for (int i = 0; i < staticObjects->size(); i++)
 	{
 		(*staticObjects)[i]->Update(timestep);
+	}
+
+	for (int i = 0; i < collisionObjects->size(); i++)
+	{
+		if ((*collisionObjects)[i]->GetType() == 'b' || (*collisionObjects)[i]->GetType() == 'e')
+		{
+			(*collisionObjects)[i]->Update(timestep);
+		}
+		(*collisionObjects)[i]->UpdateTile(timestep, player->GetPosition());
+		if ((*collisionObjects)[i]->GetType() == 'e' && rand() % 600 == 1)
+		{
+			Vector3 worldForward = Vector3(0, 0, 1);
+			Matrix heading = Matrix::CreateRotationY((*collisionObjects)[i]->GetYRotation());
+			Matrix transformation = heading;
+
+			Vector3 localForward = Vector3::TransformNormal(worldForward, transformation);
+
+			PhysicsObject* temp = new PhysicsObject(m_meshManager->GetMesh("Assets/Meshes/player_capsule.obj"), m_unlitTexturedShader, m_textureManager->GetTexture("Assets/Textures/tile_redest.png"), Vector3((*collisionObjects)[i]->GetPosition().x, 0.5f, (*collisionObjects)[i]->GetPosition().z) + localForward, localForward * 0.02);
+			temp->SetUniformScale(0.2);
+			temp->SetXRotation(PI / 2);
+			temp->SetYRotation((*collisionObjects)[i]->GetYRotation());
+			collisionObjects->push_back(temp);
+		}
 	}
 
 	if (m_input->GetKeyDown(VK_ESCAPE))
@@ -330,14 +356,6 @@ void Game::Update(float timestep)
 	logic->playerFlashing(); //makes the player flash when they are one hit away from dead
 	player->Update(timestep, logic); //updates the player
 
-	for (int i = 0; i < m_map.size(); i++) //updates the map
-	{
-		for (int j = 0; j < m_map.size(); j ++)
-		{
-			m_map[i][j]->UpdateTile(timestep, player->GetPosition());
-		}
-	}
-
 	RefreshUI();
 
 	if (m_input->GetKeyHold('M')) //if M is being held changes the camera to the over head view
@@ -356,6 +374,7 @@ void Game::Update(float timestep)
 	{
 		if ((*collisionObjects)[i]->GetDel() == true)
 		{
+			if ((*collisionObjects)[i]->GetType() == 'e') { player->SetKillCont(player->GetKillCount() + 1); }
 			delete (*collisionObjects)[i];
 			collisionObjects->erase(collisionObjects->begin() + i);
 		}
@@ -380,7 +399,7 @@ void Game::Render()
 
 	for (int i = 0; i < collisionObjects->size(); i++)
 	{
-		if ((*collisionObjects)[i]->GetType == 'b' || 'e')
+		if ((*collisionObjects)[i]->GetType() == 'b' || (*collisionObjects)[i]->GetType() == 'e')
 		{
 			(*collisionObjects)[i]->Render(m_renderer, m_currentCam);
 		}

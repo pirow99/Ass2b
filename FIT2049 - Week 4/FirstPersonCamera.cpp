@@ -36,7 +36,7 @@ void FirstPersonCamera::Update(float timestep)
 	lookAt += currentPos;
 
 	SetLookAt(lookAt);
-	SetPosition(m_player->GetPosition() + Vector3(0, 1, 0));
+	SetPosition(m_player->GetPosition() + Vector3(0, 0.7, 0));
 
 	Camera::Update(timestep);
 }

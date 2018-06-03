@@ -87,7 +87,7 @@ void GameObject::CleanTempTile() //pointer cleanup
 
 void GameObject::UpdateTile(float timestep, Vector3 player)
 {
-	if (m_texture->GetFilename() == "Assets/Textures/tile_red.png" || m_texture->GetFilename() == "Assets/Textures/tile_reder.png" || m_texture->GetFilename() == "Assets/Textures/tile_redest.png") //Magic for making the enemies face the player
+	if (m_mesh->GetFilename() == "Assets/Meshes/enemy.obj") //Magic for making the enemies face the player
 	{
 		float RVecX = player.x - m_position.x; 
 		float RVecY = player.z - m_position.z;

@@ -1,10 +1,14 @@
 #include "PhysicsObject.h"
 
+using namespace std;
+
 PhysicsObject::PhysicsObject(Mesh* mesh, Shader* shader, Texture* texture, Vector3 position) : GameObject(mesh, shader, position, texture)
 {
 	m_velocity = Vector3::Zero;
 	m_acceleration = Vector3::Zero;
 	del = false;
+	type = 'p';
+	health = 100;
 }
 
 PhysicsObject::PhysicsObject(Mesh* mesh, Shader* shader, Texture* texture, Vector3 position, Vector3 velocity) : GameObject(mesh, shader, position, texture)
@@ -13,6 +17,29 @@ PhysicsObject::PhysicsObject(Mesh* mesh, Shader* shader, Texture* texture, Vecto
 	m_acceleration = Vector3::Zero;
 	del = false;
 	type = 'b';
+	health = 100;
+}
+
+PhysicsObject::PhysicsObject(Mesh * mesh, Shader * shader, Texture * texture, Vector3 position, int e) : GameObject(mesh, shader, position, texture)
+{
+	m_velocity = Vector3::Zero;
+	m_acceleration = Vector3::Zero;
+	del = false;
+	type = 'e';
+	m_frictionAmount = 0.08f;
+	enemey = e;
+	if (e = 1)
+	{
+		health = 100;
+	}
+	else if (e = 2)
+	{
+		health = 150;
+	}
+	else
+	{
+		health = 200;
+	}
 }
 
 void PhysicsObject::Update(float timestep)
@@ -31,15 +58,40 @@ void PhysicsObject::Update(float timestep)
 
 	GameObject::Update(timestep);
 
+	if (m_position.Distance(m_position, Vector3(15,0,15)) > 30)
+	{
+		del = true;
+	}
+
+	if (type == 'e')
+	{
+
+	}
 }
 
 void PhysicsObject::OnCollisionEnter(GameObject * object)
 {
-	del = true;
+	if (type == 'b')
+	{
+		del = true;
+	}
+	if (type == 'e')
+	{
+		if (object->GetType() == 'b')
+		{
+			health = health - 25;
+			m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
+		}
+		if (health < 1)
+		{
+			del = true;
+		}
+	}
 }
 
 void PhysicsObject::OnCollisionStay(GameObject * object)
 {
+	m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
 }
 
 void PhysicsObject::OnCollisionExit(GameObject * object)

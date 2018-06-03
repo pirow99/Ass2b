@@ -20,6 +20,8 @@ public:
 	FirstPersonCamera(InputController* input, Player* player);
 
 	void Update(float timestep);
+
+	float GetPitch() { return m_pitch; };
 };
 
 #endif
