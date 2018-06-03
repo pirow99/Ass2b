@@ -285,6 +285,19 @@ void Game::Update(float timestep)
 {
 	m_input->BeginUpdate();
 	
+	if (m_input->GetKeyDown('Q'))
+	{
+		Vector3 worldForward = Vector3(0, 0, 1);
+
+		Matrix heading = Matrix::CreateRotationY(player->GetHeading());
+
+		Vector3 localForward = Vector3::TransformNormal(worldForward, heading);
+
+		PhysicsObject* temp = new PhysicsObject(m_meshManager->GetMesh("Assets/Meshes/player_capsule.obj"), m_unlitTexturedShader, m_textureManager->GetTexture("Assets/Textures/tile_red.png"), Vector3(player->GetPosition().x, 0.5f, player->GetPosition().y) + localForward * 2, localForward * 0.1);
+
+		collisionObjects->push_back(temp);
+	}
+
 	for (int i = 0; i < staticObjects->size(); i++)
 	{
 		(*staticObjects)[i]->Update(timestep);
@@ -339,6 +352,15 @@ void Game::Update(float timestep)
 
 	m_collisionManager->CheckCollisions();
 
+	for (int i = 0; i < collisionObjects->size(); i++)
+	{
+		if ((*collisionObjects)[i]->GetDel() == true)
+		{
+			delete (*collisionObjects)[i];
+			collisionObjects->erase(collisionObjects->begin() + i);
+		}
+	}
+
 	m_input->EndUpdate();
 }
 
@@ -353,6 +375,14 @@ void Game::Render()
 		for (int j = 0; j < m_map.size(); j++)
 		{
 			m_map[i][j]->Render(m_renderer, m_currentCam);
+		}
+	}
+
+	for (int i = 0; i < collisionObjects->size(); i++)
+	{
+		if ((*collisionObjects)[i]->GetType == 'b' || 'e')
+		{
+			(*collisionObjects)[i]->Render(m_renderer, m_currentCam);
 		}
 	}
 

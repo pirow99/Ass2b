@@ -4,6 +4,15 @@ PhysicsObject::PhysicsObject(Mesh* mesh, Shader* shader, Texture* texture, Vecto
 {
 	m_velocity = Vector3::Zero;
 	m_acceleration = Vector3::Zero;
+	del = false;
+}
+
+PhysicsObject::PhysicsObject(Mesh* mesh, Shader* shader, Texture* texture, Vector3 position, Vector3 velocity) : GameObject(mesh, shader, position, texture)
+{
+	m_velocity = velocity;
+	m_acceleration = Vector3::Zero;
+	del = false;
+	type = 'b';
 }
 
 void PhysicsObject::Update(float timestep)
@@ -26,6 +35,7 @@ void PhysicsObject::Update(float timestep)
 
 void PhysicsObject::OnCollisionEnter(GameObject * object)
 {
+	del = true;
 }
 
 void PhysicsObject::OnCollisionStay(GameObject * object)
