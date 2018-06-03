@@ -16,7 +16,6 @@ protected:
 	int enemey;
 	int health;
 
-	void ApplyForce(Vector3 force);
 	void ApplyFriction(float strength);
 
 public:
@@ -32,6 +31,8 @@ public:
 	virtual void OnCollisionExit(GameObject* object);
 	void SetType(char t) { type = t; };
 	bool GetDel() { return del; }
+	int GetEnemy() { return enemey; }
+	void ApplyForce(Vector3 force);
 
 };
 

@@ -26,19 +26,21 @@ PhysicsObject::PhysicsObject(Mesh * mesh, Shader * shader, Texture * texture, Ve
 	m_acceleration = Vector3::Zero;
 	del = false;
 	type = 'e';
-	m_frictionAmount = 0.08f;
 	enemey = e;
-	if (e = 1)
+	if (e == 1)
 	{
 		health = 100;
+		m_frictionAmount = 0.08f;
 	}
-	else if (e = 2)
+	else if (e == 2)
 	{
 		health = 150;
+		m_frictionAmount = 0.0f;
 	}
 	else
 	{
 		health = 200;
+		m_frictionAmount = 0.08f;
 	}
 }
 
@@ -63,7 +65,7 @@ void PhysicsObject::Update(float timestep)
 		del = true;
 	}
 
-	if (type == 'e')
+	if (enemey == 3)
 	{
 
 	}
@@ -81,6 +83,10 @@ void PhysicsObject::OnCollisionEnter(GameObject * object)
 		{
 			health = health - 25;
 			m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.05;
+			if (enemey == 2)
+			{
+				m_velocity = (Vector3(object->GetPosition().x, 0, object->GetPosition().z) - m_position) * -0.03;
+			}
 		}
 		if (health < 1)
 		{
